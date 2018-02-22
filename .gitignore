@@ -42,3 +42,12 @@ bower.json
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# Ignore emacs files
+*~
+\.\#*
+*\#
+
+# Ignore Mac OSX files
+.DS_store
+
