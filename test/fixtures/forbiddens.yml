@@ -2,10 +2,8 @@
 
 one:
   user: user1
-  name: name1
-  role: role1
+  relation: relation1
 
 two:
   user: user2
-  name: name2
-  role: role2
+  relation: relation2

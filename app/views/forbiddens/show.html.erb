@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Has one:</strong>
+  <%= @forbidden.user %>
+</p>
+
+<p>
+  <strong>Has one:</strong>
+  <%= @forbidden.relation %>
+</p>
+
+<%= link_to 'Edit', edit_forbidden_path(@forbidden) %> |
+<%= link_to 'Back', forbiddens_path %>

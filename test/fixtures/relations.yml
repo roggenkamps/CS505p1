@@ -1,11 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user: user1
-  name: name1
-  role: role1
+  name: MyString
+  description: MyString
 
 two:
-  user: user2
-  name: name2
-  role: role2
+  name: MyString
+  description: MyString

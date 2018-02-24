@@ -1,0 +1,2 @@
+class Forbidden < ApplicationRecord
+end

@@ -10,15 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180223005249) do
+ActiveRecord::Schema.define(version: 20180224134947) do
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "user_id"
-    t.string   "name"
-    t.string   "role"
+  create_table "assigneds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "grantor",    null: false
+    t.string   "grantee",    null: false
+    t.string   "relation",   null: false
+    t.boolean  "can_grant"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_users_on_user_id", using: :btree
+  end
+
+  create_table "forbiddens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "user",       null: false
+    t.string   "relation",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "user"
+    t.string   "relation"
+    t.string   "operation"
+    t.string   "object"
+    t.string   "parameters"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["relation"], name: "index_logs_on_relation", using: :btree
+    t.index ["user"], name: "index_logs_on_user", using: :btree
+  end
+
+  create_table "relations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name",        null: false
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "user",       null: false
+    t.string   "name",       null: false
+    t.string   "role",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

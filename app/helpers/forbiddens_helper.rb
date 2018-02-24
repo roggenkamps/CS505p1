@@ -1,0 +1,2 @@
+module ForbiddensHelper
+end

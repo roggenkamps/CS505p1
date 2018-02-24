@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Assigneds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Grantor</th>
+      <th>Grantee</th>
+      <th>Table</th>
+      <th>Can grant?</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @assigneds.each do |assigned| %>
+      <tr>
+        <td><%= assigned.grantor %></td>
+        <td><%= assigned.grantee %></td>
+        <td><%= assigned.relation %></td>
+        <td><%= assigned.can_grant %></td>
+        <td><%= link_to 'Show', assigned %></td>
+        <td><%= link_to 'Edit', edit_assigned_path(assigned) %></td>
+        <td><%= link_to 'Destroy', assigned, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Assigned', new_assigned_path %>

@@ -1,0 +1,37 @@
+<%= form_for(assigned) do |f| %>
+  <% if assigned.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(assigned.errors.count, "error") %> prohibited this assigned from being saved:</h2>
+
+      <ul>
+      <% assigned.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label "Grantor" %>
+    <%= f.text_field :grantor %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Grantee" %>
+    <%= f.text_field :grantee %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Table" %>
+    <%= f.text_field :relation %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Can grant?" %>
+    <%= f.check_box :can_grant %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

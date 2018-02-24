@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @log.user %>
+</p>
+
+<p>
+  <strong>Relation:</strong>
+  <%= @log.relation %>
+</p>
+
+<p>
+  <strong>Operation:</strong>
+  <%= @log.operation %>
+</p>
+
+<p>
+  <strong>Object:</strong>
+  <%= @log.object %>
+</p>
+
+<p>
+  <strong>Parameters:</strong>
+  <%= @log.parameters %>
+</p>
+
+<%= link_to 'Edit', edit_log_path(@log) %> |
+<%= link_to 'Back', logs_path %>

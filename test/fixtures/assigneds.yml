@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  grantor: grantor1
+  grantee: grantee1
+  relation: relation1
+  can_grant: false
+
+two:
+  grantor: grantor2
+  grantee: grantee2
+  relation: relation2
+  can_grant: true

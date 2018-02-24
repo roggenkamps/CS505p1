@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Grantor</strong>
+  <%= @assigned.grantor %>
+</p>
+
+<p>
+  <strong>Grantee</strong>
+  <%= @assigned.grantee %>
+</p>
+
+<p>
+  <strong>Table</strong>
+  <%= @assigned.relation %>
+</p>
+
+<p>
+  <strong>Can grant:</strong>
+  <%= @assigned.can_grant %>
+</p>
+
+<%= link_to 'Edit', edit_assigned_path(@assigned) %> |
+<%= link_to 'Back', assigneds_path %>

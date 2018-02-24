@@ -1,0 +1,27 @@
+<%= form_for(forbidden) do |f| %>
+  <% if forbidden.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(forbidden.errors.count, "error") %> prohibited this forbidden from being saved:</h2>
+
+      <ul>
+      <% forbidden.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label "User" %>
+    <%= f.text_field :user %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Table" %>
+    <%= f.text_field :relation %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
