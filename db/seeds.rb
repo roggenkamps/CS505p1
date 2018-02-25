@@ -7,9 +7,22 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create(
-[{ user:'so',     name:'Security Officer',role:'SO'},
- { user:'marek',  name:'Marek',           role:'USER'},
- { user:'dexter', name:'Dexter',          role:'USER'},
+[{ user:'so',     
+   name:'Security Officer',
+   role:'SO',   
+   password:"password",
+   email:'so@example.com'
+ },
+ { user:'marek',  
+   name:'Marek',
+   role:'USER',
+   password:"marekpw",
+   email: 'marek@example.com' },
+ { user:'dexter',
+   name:'Dexter',
+   role:'USER',
+   password:"dexterpw",
+   email: 'dexter@example.com' },
 ])
 
 Relation.create(

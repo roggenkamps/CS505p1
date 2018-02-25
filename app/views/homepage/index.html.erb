@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Welcome to CS505 Project 1</h1>
+
+<p>Please log in</p>
+
+<% if false %>
+<div id="myUK-login" class="login-section">
+  <%= form_tag uk_ldap_login_users_path() do %>
+  <%= hidden_field_tag :return_path, params[:current_path] %>
+  <div class="field-wrap">
+    <label>
+      LinkBlue ID<span class="req">*</span>
+    </label>
+    <%= text_field_tag :user_id,"", class: "login-field" %>
+  </div>
+  <div class="field-wrap">
+    <label>
+      Password<span class="req">*</span>
+    </label>
+    <%= password_field_tag :password, "", class: "login-field password-field" %>
+  </div>
+  <button class="button login-btn">LinkBlue log in</button>
+  <% end %>
+</div>
+<% end %>
+
+
+<%= form_tag user_session_path() do %>
+  <div class="field-wrap">
+    <label>
+      User name<span class="req">*</span>
+    </label>
+    <%= text_field :user, class: "register", style: "font-weight:300" %>
+  </div>
+  <div class="field-wrap" style="margin-bottom:0">
+    <label>
+      Password<span class="req">*</span>
+    </label>
+    <%= password_field :password, class: "register password-field" %>
+  </div>
+          
+  <button class="button signin-btn">Log In</button>
+<% end %>
