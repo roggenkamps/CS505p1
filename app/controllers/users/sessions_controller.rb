@@ -10,15 +10,18 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     if User.find_by_email(params[:user][:email]).present?
-      session[:user_id] = User.find_by_email(params[:user][:email]).id
+      user = User.find_by_email(params[:user][:email])
+      session[:user_id] = user.id
     else
       redirect_to root_path
     end
+    super
   end
 
   # DELETE /resource/sign_out
   def destroy
     super
+    current_user = nil
   end
 
   protected

@@ -1,8 +1,16 @@
 <header class="navbar-fixed-top">
   <nav id='nav-menu'>
     <ul class='nav navbar-nav'>
-      <li>Logout</li>
-      <li>Users</li>
+      <li>
+        <% if current_user.present? %>
+          <%= link_to "Log out", 
+              destroy_user_session_path, method: :DELETE,
+              id: "sign-out" %>
+        <% else %>
+          Log out
+        <% end %>
+      </li>
+      Users</li>
     </ul>
   </nav>
 </header>

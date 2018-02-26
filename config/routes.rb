@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
 
-  root to: 'users#show'
+  root to: 'homepage#show'
   
   devise_for :users, controllers: {sessions: "users/sessions" }
-
+  
   resources :sessions, only: [:new, :create, :destroy]
-  get '/signin',  to: 'sessions#new'
-  delete '/signout', to: 'sessions#destroy'
+
+#  get '/signin',  to: 'users/sessions#new'
+  get '/signout', to: 'users#signout'
 
 
   
@@ -15,7 +16,13 @@ Rails.application.routes.draw do
   resources :assigneds
   resources :relations
 
-  resources :users
+  resources :users do
+    collection do
+      post :assign_roles
+      get  :signout
+      get  :signin
+    end
+  end
   
 
   
