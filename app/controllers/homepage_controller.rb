@@ -14,7 +14,7 @@ class HomepageController < ApplicationController
       if current_user.role == "SO"
         @assigneds = Assigned.find_by_grantor( current_user.user )
         @tables    = Relation.all
-        @log_entries = Log.where( "user = '"+current_user.user+"'" )
+        @log_entries = Log.all.order(created_at: :desc)
       else
       end
     else

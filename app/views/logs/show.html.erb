@@ -1,13 +1,18 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Date / time:</strong>
+  <%= @log.created_at %>
+</p>
+
+<p>
   <strong>User:</strong>
   <%= @log.user %>
 </p>
 
 <p>
-  <strong>Relation:</strong>
-  <%= @log.relation %>
+  <strong>Subject:</strong>
+  <%= @log.subject %>
 </p>
 
 <p>
@@ -25,5 +30,6 @@
   <%= @log.parameters %>
 </p>
 
-<%= link_to 'Edit', edit_log_path(@log) %> |
 <%= link_to 'Back', logs_path %>
+
+<br/>

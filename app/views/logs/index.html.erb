@@ -5,8 +5,9 @@
 <table>
   <thead>
     <tr>
+      <th>Date time</th>
       <th>User</th>
-      <th>Relation</th>
+      <th>Subject</th>
       <th>Operation</th>
       <th>Object</th>
       <th>Parameters</th>
@@ -17,19 +18,14 @@
   <tbody>
     <% @logs.each do |log| %>
       <tr>
+        <td><%= log.created_at %></td>
         <td><%= log.user %></td>
-        <td><%= log.relation %></td>
+        <td><%= log.subject %></td>
         <td><%= log.operation %></td>
         <td><%= log.object %></td>
         <td><%= log.parameters %></td>
         <td><%= link_to 'Show', log %></td>
-        <td><%= link_to 'Edit', edit_log_path(log) %></td>
-        <td><%= link_to 'Destroy', log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Log', new_log_path %>

@@ -10,9 +10,9 @@
       <thead>
         <th>Date/time</th>
         <th>User</th>
-        <th>Table</th>
-        <th>Operation</th>
         <th>Subject</th>
+        <th>Operation</th>
+        <th>Object</th>
         <th>Parameters</th>
       </thead>
       <tbody>
@@ -20,7 +20,7 @@
           <tr>
             <td><%= le.created_at %></td>
             <td><%= le.user %></td>
-            <td><%= le.relation %></td>
+            <td><%= le.subject %></td>
             <td><%= le.operation %></td>
             <td><%= le.object %></td>
             <td><%= le.parameters %></td>

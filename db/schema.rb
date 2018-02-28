@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180224134947) do
+ActiveRecord::Schema.define(version: 20180227032958) do
 
   create_table "assigneds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "grantor",    null: false
@@ -30,13 +30,13 @@ ActiveRecord::Schema.define(version: 20180224134947) do
 
   create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "user"
-    t.string   "relation"
+    t.string   "subject"
     t.string   "operation"
     t.string   "object"
     t.string   "parameters"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["relation"], name: "index_logs_on_relation", using: :btree
+    t.index ["subject"], name: "index_logs_on_subject", using: :btree
     t.index ["user"], name: "index_logs_on_user", using: :btree
   end
 

@@ -23,6 +23,41 @@ User.create(
    role:'USER',
    password:"dexterpw",
    email: 'dexter@example.com' },
+ { user:'adam',
+   name:'Adam',
+   role:'USER',
+   password:"adampw",
+   email: 'adam@example.com' },
+ { user:'barb',
+   name:'Barb',
+   role:'USER',
+   password:"barbpw",
+   email: 'barb@example.com' },
+ { user:'chuck',
+   name:'Chuck',
+   role:'USER',
+   password:"chuckpw",
+   email: 'chuck@example.com' },
+ { user:'don',
+   name:'Don',
+   role:'USER',
+   password:"donpw",
+   email: 'don@example.com' },
+ { user:'eric',
+   name:'Eric',
+   role:'USER',
+   password:"ericpw",
+   email: 'eric@example.com' },
+ { user:'fawn',
+   name:'Fawn',
+   role:'USER',
+   password:"fawnpw",
+   email: 'fawn@example.com' },
+ { user:'gabi',
+   name:'Gabi',
+   role:'USER',
+   password:"gabipw",
+   email: 'gabi@example.com' },
 ])
 
 Relation.create(
@@ -31,7 +66,16 @@ Relation.create(
   ])
 
 Assigned.create(
-  [{grantor:"so",grantee:"dexter",relation:"design",can_grant:true}
+  [{grantor:"so",grantee:"marek",relation:"design",can_grant:true},
+   {grantor:"marek",grantee:"adam",relation:"design",can_grant:true},
+   {grantor:"adam",grantee:"barb",relation:"design",can_grant:true},
+   {grantor:"marek",grantee:"barb",relation:"design",can_grant:true},
+   {grantor:"marek",grantee:"gabi",relation:"design",can_grant:false},
+   {grantor:"barb",grantee:"chuck",relation:"design",can_grant:true},
+   {grantor:"barb",grantee:"don",relation:"design",can_grant:false},
+   {grantor:"don",grantee:"eric",relation:"design",can_grant:true},
+   {grantor:"eric",grantee:"fawn",relation:"design",can_grant:false},
+   {grantor:"eric",grantee:"gabi",relation:"design",can_grant:false},
   ])
 
 Forbidden.create(
@@ -39,7 +83,7 @@ Forbidden.create(
   ])
 
 Log.create(
-  [{user:"so",relation:"design",operation:"grant",object:"user:dexter"},
-   {user:"so",relation:"design",operation:"forbid",object:"user:marek"},
+  [{user:"so",relation:"table:design",operation:"grant",object:"user:dexter"},
+   {user:"so",relation:"table:design",operation:"forbid",object:"user:marek"},
   ])
 

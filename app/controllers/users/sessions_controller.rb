@@ -12,6 +12,7 @@ class Users::SessionsController < Devise::SessionsController
     if User.find_by_email(params[:user][:email]).present?
       user = User.find_by_email(params[:user][:email])
       session[:user_id] = user.id
+      Log.new({user: user.user, subject: "user:"+user.user, operation: "Logged in" }).save
     else
       redirect_to root_path
     end
@@ -20,6 +21,9 @@ class Users::SessionsController < Devise::SessionsController
 
   # DELETE /resource/sign_out
   def destroy
+    Log.new({user: current_user.user, 
+              subject: "user:"+current_user.user,
+              operation: "Logged out" }).save
     super
     current_user = nil
   end
