@@ -11,7 +11,6 @@ class Users::SessionsController < Devise::SessionsController
   def create
     # devise authentication needs an email address, so make one
     # from the username by appending '@example.com' to the end
-    byebug
     if params[:user][:email].present?
       new_email = params[:user][:email]
       if !new_email.index('@').present?

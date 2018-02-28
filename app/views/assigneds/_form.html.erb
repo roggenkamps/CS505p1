@@ -11,10 +11,14 @@
     </div>
   <% end %>
 
+  <% if current_user.present? and current_user.role == "SO" %>
   <div class="field">
     <%= f.label "Grantor" %>
     <%= f.text_field :grantor %>
   </div>
+  <% else %>
+    <%= f.hidden_field( :grantor, value: current_user.user ) %>
+  <% end %>
 
   <div class="field">
     <%= f.label "Grantee" %>
