@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Relations</h1>
+<h1>Tables</h1>
 
 <table>
   <thead>
@@ -18,7 +18,7 @@
         <td><%= relation.description %></td>
         <td><%= link_to 'Show', relation %></td>
         <td><%= link_to 'Edit', edit_relation_path(relation) %></td>
-        <td><%= link_to 'Destroy', relation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Drop', relation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +26,4 @@
 
 <br>
 
-<%= link_to 'New Relation', new_relation_path %>
+<%= link_to 'New Table, new_relation_path %>

@@ -9,6 +9,18 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
+    # devise authentication needs an email address, so make one
+    # from the username by appending '@example.com' to the end
+    byebug
+    if params[:user][:email].present?
+      new_email = params[:user][:email]
+      if !new_email.index('@').present?
+        new_email = new_email + "@example.com"
+        params[:user][:email] = new_email
+      end
+    end
+
+    # find the user in the database, or redirect to the home page
     if User.find_by_email(params[:user][:email]).present?
       user = User.find_by_email(params[:user][:email])
       session[:user_id] = user.id

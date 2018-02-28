@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :signout]
+  before_action :set_user, only: [:signout]
+  before_action :so_user_check, only: [:show, :edit, :update, :destroy, :signout]
   
   # GET /users
   # GET /users.json
@@ -26,6 +27,11 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    Log.new({user: current_user.user, 
+              subject: "user:"+current_user.user,
+              operation: "Created user",
+              object:    "user:"+@user.name,
+            }).save
 
     respond_to do |format|
       if @user.save
@@ -41,6 +47,12 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    Log.new({user: current_user.user, 
+              subject: "user:"+current_user.user,
+              operation: "Updated user",
+              object:    "user:"+@user.name,
+              parameters: "user_params"
+            }).save
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -55,6 +67,11 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    Log.new({user: current_user.user, 
+              subject: "user:"+current_user.user,
+              operation: "Deleted user",
+              object:    "user:"+@user.name,
+            }).save
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
@@ -62,17 +79,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def assign_roles
-    byebug
-  end
-  
-  def login
-    byebug
-  end
-
   def signout
     if current_user.present?
-      byebug
       session.destroy
       redirect_to root_path
     end
@@ -82,6 +90,12 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
   def set_user
     if current_user.present?
+      @user = User.find(params[:id])
+    end
+  end
+
+  def so_user_check
+    if current_user.present? and current_user.role == :SO
       @user = User.find(params[:id])
     end
   end

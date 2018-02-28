@@ -4,7 +4,11 @@ class AssignedsController < ApplicationController
   # GET /assigneds
   # GET /assigneds.json
   def index
-    @assigneds = Assigned.all
+    if current_user.present? and current_user.role == "SO"
+      @assigneds = Assigned.all
+    else
+      @assigneds = Assigned.where( grantor: current_user.name )
+    end
   end
 
   # GET /assigneds/1
@@ -25,6 +29,12 @@ class AssignedsController < ApplicationController
   # POST /assigneds.json
   def create
     @assigned = Assigned.new(assigned_params)
+    Log.new({user: current_user.user, 
+              subject: "user:"+@assigned.grantee,
+              operation: "Can access",
+              object:    "table:"+@assigned.relation,
+              parameters: "canGrant:"+@assigned.can_grant.to_s
+            }).save
 
     respond_to do |format|
       if @assigned.save
@@ -40,6 +50,13 @@ class AssignedsController < ApplicationController
   # PATCH/PUT /assigneds/1
   # PATCH/PUT /assigneds/1.json
   def update
+    Log.new({user: current_user.user, 
+              subject: "user:"+@assigned.grantee,
+              operation: "Modified access",
+              object:    "table:"+@assigned.relation,
+              parameters: "canGrant:"+@assigned.can_grant.to_s
+            }).save
+
     respond_to do |format|
       if @assigned.update(assigned_params)
         format.html { redirect_to @assigned, notice: 'Assigned was successfully updated.' }
@@ -54,6 +71,11 @@ class AssignedsController < ApplicationController
   # DELETE /assigneds/1
   # DELETE /assigneds/1.json
   def destroy
+    Log.new({user: current_user.user, 
+              subject: "user:"+@assigned.grantee,
+              operation: "Revoked access",
+              object:    "table:"+@assigned.relation
+            }).save
     @assigned.destroy
     respond_to do |format|
       format.html { redirect_to assigneds_url, notice: 'Assigned was successfully destroyed.' }

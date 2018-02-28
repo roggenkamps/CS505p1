@@ -22,7 +22,7 @@
         <td><%= assigned.can_grant %></td>
         <td><%= link_to 'Show', assigned %></td>
         <td><%= link_to 'Edit', edit_assigned_path(assigned) %></td>
-        <td><%= link_to 'Destroy', assigned, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Revoke', assigned, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

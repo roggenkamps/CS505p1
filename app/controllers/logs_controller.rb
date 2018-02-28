@@ -4,7 +4,7 @@ class LogsController < ApplicationController
   # GET /logs
   # GET /logs.json
   def index
-    @logs = Log.all
+    @logs = Log.all.order(created_at: :desc)
   end
 
   # GET /logs/1
@@ -64,7 +64,7 @@ class LogsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_log
-      @log = Log.find(params[:id])
+      @log = Log.find(params[:id] )
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
