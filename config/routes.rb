@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   get '/signout', to: 'users#signout'
   
-  resources :logs
+  resources :logs, only: [:index, :show]
   resources :forbiddens
   resources :assigneds
   resources :relations
