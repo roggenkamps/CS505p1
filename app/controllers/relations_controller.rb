@@ -10,7 +10,7 @@ class RelationsController < ApplicationController
   # GET /relations/1
   # GET /relations/1.json
   def show
-    if false # !check_permissions( current_user.user, @relation.name, 0 )
+    if !check_permissions( current_user.user, @relation.name )
       Log.new({user: current_user.user, 
                subject: "user:"+current_user.user,
                operation: "ACCESS DENIED",
@@ -62,7 +62,7 @@ class RelationsController < ApplicationController
   # PATCH/PUT /relations/1
   # PATCH/PUT /relations/1.json
   def update
-    if false #  !check_permissions( current_user.user, @relation.name, 0 )
+    if !check_permissions( current_user.user, @relation.name )
       Log.new({user: current_user.user, 
                subject: "user:"+current_user.user,
                operation: "UPDATE DENIED",
@@ -90,7 +90,7 @@ class RelationsController < ApplicationController
   # DELETE /relations/1
   # DELETE /relations/1.json
   def destroy
-    if false #  !check_permissions( current_user.user, @relation.name, 0 )
+    if !check_permissions( current_user.user, @relation.name )
       Log.new({user: current_user.user, 
               subject: "user:"+current_user.user,
               operation: "dropped",
@@ -113,11 +113,10 @@ class RelationsController < ApplicationController
 
   private
 
-  def check_permissions(username,tablename,level)
+  def check_permissions(username,tablename )
     # current user must have permisison to show a table
     # first check the forbiddens table to see if the user cannot access the table
 
-    byebug
     user = User.find_by_user( username )
     if user.role == 'SO'
       return true
@@ -126,19 +125,25 @@ class RelationsController < ApplicationController
     if forbid.present?
         return false
     else
-      permitted = Assigned.where( grantee: username, relation: tablename )
-      rc = permitted.present?
-      permitted.find_each do |permission|
-        grantor = User.find_by_user( permission.grantor )
-        if grantor.role == 'SO'
-          return true
-        else
-          if permission.can_grant or level == 0
-            if check_permissions( grantor.user, tablename, level + 1 )
+      level = 0
+      activeUsers = [ username ]
+      while !activeUsers.empty?
+        username = activeUsers.shift
+        permitted = Assigned.where( grantee: username, relation: tablename )
+        permitted.find_each do |permission|
+          grantor = User.find_by_user( permission.grantor )
+          forbidden = Forbidden.where( user: grantor.user, relation: tablename ).take(1)
+          if !forbidden.present? 
+            if grantor.role == 'SO'
               return true
+            else
+              if permission.can_grant || level == 0
+                activeUsers << grantor.user
+              end
             end
           end
         end
+        level = level + 1
       end
     end
     return false
