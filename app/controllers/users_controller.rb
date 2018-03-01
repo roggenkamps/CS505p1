@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:signout]
+  before_action :set_user, only: [:edit, :show, :signout, :update ]
   before_action :so_user_check, only: [:show, :edit, :update, :destroy, :signout]
   
   # GET /users
@@ -47,17 +47,28 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    Log.new({user: current_user.user, 
-              subject: "user:"+current_user.user,
-              operation: "Updated user",
-              object:    "user:"+@user.name,
-              parameters: "user_params"
-            }).save
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
+    # check to see that we have both a password and a password confirmation OR
+    # that we have neither
+    if ( params[:password].present? && params[:password_confirmation].present? &&
+         params[:password] === params[:password_confirmation] ) ||
+       ( !params[:password].present? && !params[:password_confirmation].present? )
+      Log.new({user: current_user.user, 
+               subject: "user:"+current_user.user,
+               operation: "Updated user",
+               object:    "user:"+@user.name,
+               parameters: "user_params"
+              }).save
+      respond_to do |format|
+        if @user.update(user_params).save
+          format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -103,6 +114,6 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     p "UsersControllers: "+params.to_s
-    params.require(:user).permit(:user, :name, :role)
+    params.require(:user).permit(:user, :name, :role, :email, :password, :password_confirmation )
   end
 end

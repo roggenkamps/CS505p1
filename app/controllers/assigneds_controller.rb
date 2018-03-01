@@ -31,7 +31,7 @@ class AssignedsController < ApplicationController
     @assigned = Assigned.new(assigned_params)
     Log.new({user: current_user.user, 
               subject: "user:"+@assigned.grantee,
-              operation: "Can access",
+              operation: "added access",
               object:    "table:"+@assigned.relation,
               parameters: "canGrant:"+@assigned.can_grant.to_s
             }).save
@@ -52,7 +52,7 @@ class AssignedsController < ApplicationController
   def update
     Log.new({user: current_user.user, 
               subject: "user:"+@assigned.grantee,
-              operation: "Modified access",
+              operation: "modified access",
               object:    "table:"+@assigned.relation,
               parameters: "canGrant:"+@assigned.can_grant.to_s
             }).save
@@ -73,7 +73,7 @@ class AssignedsController < ApplicationController
   def destroy
     Log.new({user: current_user.user, 
               subject: "user:"+@assigned.grantee,
-              operation: "Revoked access",
+              operation: "revoked access",
               object:    "table:"+@assigned.relation
             }).save
     @assigned.destroy

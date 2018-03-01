@@ -83,7 +83,7 @@ Forbidden.create(
   ])
 
 Log.create(
-  [{user:"so",relation:"table:design",operation:"grant",object:"user:dexter"},
-   {user:"so",relation:"table:design",operation:"forbid",object:"user:marek"},
+  [# {user:"so",relation:"table:design",operation:"grant",object:"user:dexter"},
+   # {user:"so",relation:"table:design",operation:"forbid",object:"user:marek"},
   ])
 

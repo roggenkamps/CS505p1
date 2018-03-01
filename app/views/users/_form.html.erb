@@ -22,8 +22,25 @@
   </div>
 
   <div class="field">
-    <%= f.label :role %>
-    <%= f.text_field :role %>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmatio %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Security Officer" %>
+    <%= f.radio_button( :role, "SO" ) %>
+    <%= f.label "User" %>
+    <%= f.radio_button( :role, "USER" ) %>
   </div>
 
   <div class="actions">

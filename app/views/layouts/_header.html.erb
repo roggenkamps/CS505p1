@@ -18,9 +18,11 @@
       <li class='nav-item'>
         <%= link_to "Users", users_path, method: :GET, class:'nav-link' %>
       </li>
+      <% end %>
       <li class='nav-item'>
         <%= link_to "Tables", relations_path, method: :GET, class:'nav-link' %>
       </li>
+      <% if current_user.present? and current_user.role == "SO" %>
       <li class='nav-item'>
         <%= link_to "Forbidden", forbiddens_path, method: :GET, class:'nav-link' %>
       </li>

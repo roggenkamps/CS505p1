@@ -1,6 +1,7 @@
 class ForbiddensController < ApplicationController
   before_action :set_forbidden, only: [:show, :edit, :update, :destroy]
-
+  before_action :so_user_check, only: [:show, :edit, :update, :destroy, :signout]
+  
   # GET /forbiddens
   # GET /forbiddens.json
   def index
@@ -25,6 +26,11 @@ class ForbiddensController < ApplicationController
   # POST /forbiddens.json
   def create
     @forbidden = Forbidden.new(forbidden_params)
+    Log.new({user: current_user.user, 
+              subject: "user:"+@forbidden.user,
+              operation: "created forbidden",
+              object:    "table:"+@forbidden.relation
+            }).save
 
     respond_to do |format|
       if @forbidden.save
@@ -40,6 +46,12 @@ class ForbiddensController < ApplicationController
   # PATCH/PUT /forbiddens/1
   # PATCH/PUT /forbiddens/1.json
   def update
+    Log.new({user: current_user.user, 
+              subject: "user:"+@forbidden.user,
+              operation: "updated forbidden",
+              object:    "table:"+@forbidden.relation
+            }).save
+
     respond_to do |format|
       if @forbidden.update(forbidden_params)
         format.html { redirect_to @forbidden, notice: 'Forbidden was successfully updated.' }
@@ -54,6 +66,11 @@ class ForbiddensController < ApplicationController
   # DELETE /forbiddens/1
   # DELETE /forbiddens/1.json
   def destroy
+    Log.new({user: current_user.user, 
+              subject: "user:"+@forbidden.user,
+              operation: "deleted forbidden",
+              object:    "table:"+@forbidden.relation
+            }).save
     @forbidden.destroy
     respond_to do |format|
       format.html { redirect_to forbiddens_url, notice: 'Forbidden was successfully destroyed.' }
@@ -62,7 +79,14 @@ class ForbiddensController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+  def so_user_check
+    if current_user.present? and current_user.role == :SO
+      @user = User.find( current_user.id )
+    end
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
     def set_forbidden
       @forbidden = Forbidden.find(params[:id])
     end
