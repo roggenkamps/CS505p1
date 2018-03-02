@@ -45,7 +45,6 @@ class ForbiddensController < ApplicationController
       if @forbidden.attempts == 0 and @assigned.present?
         @forbidden.attempts = @forbidden.attempts+1
         @forbidden.active = false
-        byebug
         respond_to do |format|
           if @forbidden.save
             @forbidden = Forbidden.where( user: @forbidden.user, relation:@forbidden.relation ).first
@@ -65,7 +64,6 @@ class ForbiddensController < ApplicationController
                 }).save
 
         respond_to do |format|
-          byebug
           if @forbidden.save
             format.html { redirect_to @forbidden, notice: 'Forbidden was successfully created.' }
             format.json { render :show, status: :created, location: @forbidden }
@@ -86,7 +84,6 @@ class ForbiddensController < ApplicationController
              operation: "updated forbidden",
              object:    "table:"+@forbidden.relation
             }).save
-    byebug
     @updated_params = forbidden_params
     set_forbidden
     updates = {}
@@ -122,6 +119,7 @@ class ForbiddensController < ApplicationController
 
   private
 
+  # insure only SO can create Forbiddens
   def so_user_check
     if current_user.present? and current_user.role == :SO
       @forbidden = Forbidden.find(params[:id])

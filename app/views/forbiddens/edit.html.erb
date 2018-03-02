@@ -1,7 +1,7 @@
-<% byebug %>
-
 <% if !@forbidden.active and @forbidden.attempts == 1 %>
 <h1>Confirm Forbidden</h1>
+<p><%= @forbidden.user %> is currently has access to <%= @forbidden.relation %>.
+  Removing them from this table may impact business processes!</p>
 <% else %>
 <h1>Editing Forbidden</h1>
 <% end %>

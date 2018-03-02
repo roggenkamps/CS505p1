@@ -24,7 +24,6 @@
   <%= f.hidden_field :attempts %>
   <%= f.hidden_field :active   %>
   <div class="actions">
-    <% byebug %>
     <% if !forbidden.active and forbidden.attempts == 1 %>
       <%= f.submit "Confirm" %>
     <% else %>
