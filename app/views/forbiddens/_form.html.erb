@@ -21,7 +21,14 @@
     <%= f.text_field :relation %>
   </div>
 
+  <%= f.hidden_field :attempts %>
+  <%= f.hidden_field :active   %>
   <div class="actions">
-    <%= f.submit %>
+    <% byebug %>
+    <% if !forbidden.active and forbidden.attempts == 1 %>
+      <%= f.submit "Confirm" %>
+    <% else %>
+      <%= f.submit %>
+    <% end %>
   </div>
 <% end %>

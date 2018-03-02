@@ -121,7 +121,7 @@ class RelationsController < ApplicationController
     if user.role == 'SO'
       return true
     end
-    forbid = Forbidden.find_by( user: username, relation: tablename )
+    forbid = Forbidden.find_by( user: username, relation: tablename, active: true )
     if forbid.present?
         return false
     else
@@ -132,7 +132,7 @@ class RelationsController < ApplicationController
         permitted = Assigned.where( grantee: username, relation: tablename )
         permitted.find_each do |permission|
           grantor = User.find_by_user( permission.grantor )
-          forbidden = Forbidden.where( user: grantor.user, relation: tablename ).take(1)
+          forbidden = Forbidden.find_by( user: grantor.user, relation: tablename, active: true )
           if !forbidden.present? 
             if grantor.role == 'SO'
               return true

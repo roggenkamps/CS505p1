@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   
   resources :logs, only: [:index, :show]
   resources :forbiddens
+
   resources :assigneds
   resources :relations
 

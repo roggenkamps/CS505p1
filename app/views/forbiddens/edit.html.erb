@@ -1,5 +1,10 @@
-<h1>Editing Forbidden</h1>
+<% byebug %>
 
+<% if !@forbidden.active and @forbidden.attempts == 1 %>
+<h1>Confirm Forbidden</h1>
+<% else %>
+<h1>Editing Forbidden</h1>
+<% end %>
 <%= render 'form', forbidden: @forbidden %>
 
 <%= link_to 'Show', @forbidden %> |

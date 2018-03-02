@@ -79,7 +79,7 @@ Assigned.create(
   ])
 
 Forbidden.create(
-  [{user:"marek",relation:"design"},
+  [{user:"marek",relation:"design",active:true},
   ])
 
 Log.create(
