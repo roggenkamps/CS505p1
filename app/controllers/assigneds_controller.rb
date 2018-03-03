@@ -30,7 +30,6 @@ class AssignedsController < ApplicationController
   def create
     @assigned = Assigned.new(assigned_params)
     @table    = Relation.find_by_name( @assigned.relation )
-#    byebug
     if @table.present?
       if RelationsController.check_permissions( @assigned.grantor, @assigned.relation, true )
         Log.new({user: current_user.user, 
@@ -101,6 +100,52 @@ class AssignedsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to assigneds_url, notice: 'Assigned was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def AssignedsController.delete_chain( current_user, username, tablename )
+
+    # delete the Assigneds held by the user
+    assigns = Assigned.where( grantee: username, relation: tablename )
+    assigns.find_each do |assign|
+      Log.new({user:      current_user.user, 
+               subject:   "user:"+assign.grantee,
+               operation: "revoked access",
+               object:    "table:"+assign.relation,
+               parameters: "grantedBy:"+assign.grantor
+              }).save
+      assign.destroy
+    end
+
+    activeUsers = [username]
+
+    # perform a depdth-first search of the ASSIGNED, starting with username
+    # and going forward in the graph
+    # activeUsers contains the list of users who may have permission
+    while !activeUsers.empty?
+      grantor = activeUsers.shift
+
+      # get array of users who have been granted permission by username
+      assigns = Assigned.where( grantor: grantor, relation: tablename )
+      assigns.find_each do |assign|
+
+        if !RelationsController.check_permissions( assign.grantee, assign.relation, false )
+          # the grantee does not have alternative access to the table,
+          # so put them on the list to lose access
+          activeUsers << assign.grantee
+        end
+
+        # destroy the current assign, then check to see if subsequent
+        # assigns need to be destroyed
+        Log.new({user:      current_user.user, 
+                 subject:   "user:"+assign.grantee,
+                 operation: "revoked access",
+                 object:    "table:"+assign.relation,
+                  parameters: "grantedBy:"+assign.grantor
+                }).save
+        assign.destroy
+
+      end
     end
   end
 

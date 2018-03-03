@@ -18,12 +18,6 @@ class ForbiddensController < ApplicationController
     if current_user.present?
       if current_user.role == "SO"
         @forbidden = Forbidden.new
-      else
-        Log.new({user: current_user.user, 
-                 subject: "user:"+@forbidden.user,
-                 operation: "created forbidden",
-                 object:    "table:"+@forbidden.relation
-                }).save
       end
     end
   end
@@ -90,6 +84,8 @@ class ForbiddensController < ApplicationController
     if @forbidden.attempts == 1 and !@forbidden.active
       updates[:active] = true
       updates[:attempts] = 0
+      @forbidden.update(updates)
+      AssignedsController.delete_chain( current_user, @forbidden.user, @forbidden.relation )
     end
     respond_to do |format|
       if @forbidden.update(updates)

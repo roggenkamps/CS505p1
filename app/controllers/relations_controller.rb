@@ -138,13 +138,14 @@ class RelationsController < ApplicationController
 
     user = User.find_by_user( username )
 
+    # check to see if this user is on the FORBIDDEN list for this table
+    forbidden = Forbidden.find_by( user: username, relation: tablename, active: true )
+
     # users with role of 'SO' have permission to do anything
-    if user.role == 'SO'
+    if user.role == 'SO' && !forbidden.present?
       return true
     end
 
-    # check to see if this user is on the FORBIDDEN list for this table
-    forbidden = Forbidden.find_by( user: username, relation: tablename, active: true )
     if forbidden.present?
       return false
     else

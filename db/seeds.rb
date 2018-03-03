@@ -72,14 +72,10 @@ Assigned.create(
    {grantor:"marek",grantee:"barb",relation:"design",can_grant:true},
    {grantor:"marek",grantee:"gabi",relation:"design",can_grant:false},
    {grantor:"barb",grantee:"chuck",relation:"design",can_grant:true},
-   {grantor:"barb",grantee:"don",relation:"design",can_grant:false},
+   {grantor:"barb",grantee:"don",relation:"design",can_grant:true},
    {grantor:"don",grantee:"eric",relation:"design",can_grant:true},
    {grantor:"eric",grantee:"fawn",relation:"design",can_grant:false},
    {grantor:"eric",grantee:"gabi",relation:"design",can_grant:false},
-  ])
-
-Forbidden.create(
-  [{user:"marek",relation:"design",active:true},
   ])
 
 Log.create(
