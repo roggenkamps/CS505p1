@@ -5,9 +5,9 @@ class AssignedsController < ApplicationController
   # GET /assigneds.json
   def index
     if current_user.present? and current_user.role == "SO"
-      @assigneds = Assigned.all
+      @assigneds = Assigned.all.order( :grantor, :grantee )
     else
-      @assigneds = Assigned.where( grantor: current_user.name )
+      @assigneds = Assigned.where( grantor: current_user.name ).order( :grantor, :grantee )
     end
   end
 
@@ -29,19 +29,40 @@ class AssignedsController < ApplicationController
   # POST /assigneds.json
   def create
     @assigned = Assigned.new(assigned_params)
-    Log.new({user: current_user.user, 
-              subject: "user:"+@assigned.grantee,
-              operation: "added access",
-              object:    "table:"+@assigned.relation,
-              parameters: "canGrant:"+@assigned.can_grant.to_s
-            }).save
-
-    respond_to do |format|
-      if @assigned.save
-        format.html { redirect_to @assigned, notice: 'Assigned was successfully created.' }
-        format.json { render :show, status: :created, location: @assigned }
+    @table    = Relation.find_by_name( @assigned.relation )
+#    byebug
+    if @table.present?
+      if RelationsController.check_permissions( @assigned.grantor, @assigned.relation, true )
+        Log.new({user: current_user.user, 
+                 subject: "user:"+@assigned.grantee,
+                 operation: "added access",
+                 object:    "table:"+@assigned.relation,
+                 parameters: "canGrant:"+@assigned.can_grant.to_s
+                }).save
+        respond_to do |format|
+          if @assigned.save
+            format.html { redirect_to @assigned, notice: 'Assigned was successfully created.' }
+            format.json { render :show, status: :created, location: @assigned }
+          else
+            format.html { redirect_to assigneds_path, notice: 'Problem saving Assigned.' }
+            format.json { render json: @assigned.errors, status: :unprocessable_entity }
+          end
+        end
       else
-        format.html { render :new }
+        Log.new({user: current_user.user, 
+                 subject: "user:"+@assigned.grantee,
+                 operation: "ACCESS DENIED",
+                 object:    "table:"+@assigned.relation,
+                 parameters: "canGrant:"+@assigned.can_grant.to_s
+                }).save
+        respond_to do |format|
+          format.html { redirect_to :root, notice: 'Access denied to '+@assigned.relation }
+          format.json { render json: @assigned.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to :root, notice: 'Table not found: '+@assigned.relation }
         format.json { render json: @assigned.errors, status: :unprocessable_entity }
       end
     end

@@ -21,8 +21,8 @@
     <%= f.text_field :relation %>
   </div>
 
-  <%= f.hidden_field :attempts %>
-  <%= f.hidden_field :active   %>
+  <input id="forbidden-attempts" name="attempts" type="hidden" value="<%= forbidden.attempts %>" />
+  <input id="forbidden-active"   name="active"   type="hidden" value="<%= forbidden.active %>" />
   <div class="actions">
     <% if !forbidden.active and forbidden.attempts == 1 %>
       <%= f.submit "Confirm" %>
