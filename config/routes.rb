@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   
   resources :sessions, only: [:new, :create, :destroy]
 
-  get '/signout', to: 'users#signout'
+  get  '/signout',        to: 'users#signout'
+  get  '/resetdb',        to: 'resetdb#resetdb'
+  post '/resetdb_commit', to: 'resetdb#resetdb_commit'
   
   resources :logs, only: [:index, :show]
   resources :forbiddens

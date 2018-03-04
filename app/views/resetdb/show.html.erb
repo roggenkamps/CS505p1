@@ -1,0 +1,15 @@
+<h1>Reset the Database</h1>
+
+<p>
+  This will permanently discard all data currently residing in the
+  database and reset it to its initial state.  If you want to do this,
+  please press the button below, otherwise, press the Home button.
+</p>
+  
+<%= form_tag resetdb_commit_path() do %>
+  <button class="button signin-btn">Reset DB</button>
+<% end %>
+
+<%= form_tag root_path() do %>
+  <button class="button signin-btn">Cancel</button>
+<% end %>

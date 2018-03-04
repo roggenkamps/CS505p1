@@ -1,10 +1,8 @@
-class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
-
+class ResetdbController < ActionController::Base
   def resetdb
     if current_user.role == "SO"
       respond_to do |format|
-        format.html { redirect_to index_homepage_path, notice: 'RESET DB' }
+        format.html { render :show, notice: 'RESET DB' }
         format.json { render :show, status: :ok, location: @assigned }
       end
     else
