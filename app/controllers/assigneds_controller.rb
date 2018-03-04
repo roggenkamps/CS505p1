@@ -32,7 +32,7 @@ class AssignedsController < ApplicationController
     @table    = Relation.find_by_name( @assigned.relation )
     if @table.present?
       if RelationsController.check_permissions( @assigned.grantor, @assigned.relation, true )
-        if RelationsController.check_permissions( @assigned.grantee, @assigned.relation, @assigned.can_grant )
+        if RelationsController.check_permissions( @assigned.grantee, @assigned.relation, false )
           Log.new({user: current_user.user, 
                    subject: "user:"+@assigned.grantee,
                    operation: "granted access",

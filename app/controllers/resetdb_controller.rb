@@ -15,10 +15,22 @@ class ResetdbController < ActionController::Base
 
   def resetdb_commit
     if current_user.role == "SO"
-      Kernel.system( "bin/rails db:drop && bin/rails db:setup" )
-      respond_to do |format|
-        format.html { redirect_to :root, notice: "Database reset" }
-        format.json { render json: @assigned.errors, status: :unprocessable_entity }
+      rc = Kernel.system( "bin/reset_database.sh" )
+      if rc.present? and rc
+        Log.new({user: current_user.user, 
+                 subject: "database",
+                 operation: "RESET"
+                }).save
+        
+        respond_to do |format|
+          format.html { redirect_to :root, notice: "Database successfully reset" }
+          format.json { render json: @assigned.errors, status: :unprocessable_entity }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to :root, notice: "Database reset failed, exit = "+$?.to_s }
+          format.json { render json: @assigned.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
