@@ -32,18 +32,31 @@ class AssignedsController < ApplicationController
     @table    = Relation.find_by_name( @assigned.relation )
     if @table.present?
       if RelationsController.check_permissions( @assigned.grantor, @assigned.relation, true )
-        Log.new({user: current_user.user, 
-                 subject: "user:"+@assigned.grantee,
-                 operation: "added access",
-                 object:    "table:"+@assigned.relation,
-                 parameters: "canGrant:"+@assigned.can_grant.to_s
-                }).save
-        respond_to do |format|
-          if @assigned.save
-            format.html { redirect_to @assigned, notice: 'Assigned was successfully created.' }
-            format.json { render :show, status: :created, location: @assigned }
-          else
-            format.html { redirect_to assigneds_path, notice: 'Problem saving Assigned.' }
+        if RelationsController.check_permissions( @assigned.grantee, @assigned.relation, @assigned.can_grant )
+          Log.new({user: current_user.user, 
+                   subject: "user:"+@assigned.grantee,
+                   operation: "granted access",
+                   object:    "table:"+@assigned.relation,
+                   parameters: "canGrant:"+@assigned.can_grant.to_s
+                  }).save
+          respond_to do |format|
+            if @assigned.save
+              format.html { redirect_to @assigned, notice: 'Grant was successfully created.' }
+              format.json { render :show, status: :created, location: @assigned }
+            else
+              format.html { redirect_to assigneds_path, notice: 'Problem saving Assigned.' }
+              format.json { render json: @assigned.errors, status: :unprocessable_entity }
+            end
+          end
+        else
+          Log.new({user: current_user.user, 
+                   subject: "user:"+@assigned.grantee,
+                   operation: "GRANT DENIED",
+                   object:    "table:"+@assigned.relation,
+                   parameters: "grantee:"+@assigned.grantee
+                  }).save
+          respond_to do |format|
+            format.html { redirect_to :root, notice: @assigned.grantee+' does not have access to table '+@assigned.relation }
             format.json { render json: @assigned.errors, status: :unprocessable_entity }
           end
         end
