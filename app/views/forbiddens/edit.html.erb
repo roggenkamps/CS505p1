@@ -8,4 +8,9 @@
 <%= render 'form', forbidden: @forbidden %>
 
 <%= link_to 'Show', @forbidden %> |
+<% if @forbidden.active %>
 <%= link_to 'Back', forbiddens_path %>
+<% else %>
+<%= link_to 'Back', @forbidden, method:"DELETE" %>
+<% end %>
+   

@@ -42,13 +42,14 @@ class ForbiddensController < ApplicationController
         respond_to do |format|
           if @forbidden.save
             @forbidden = Forbidden.where( user: @forbidden.user, relation:@forbidden.relation ).first
-            format.html { redirect_to edit_forbidden_path(@forbidden.id), warning: "User: %{@forbidden.user} currently has access to %{@forbidden.relation} table.  Please confirm removing access." }
+            format.html { render "edit", warning: "User: %{@forbidden.user} currently has access to %{@forbidden.relation} table.  Please confirm removing access." }
             format.json { render json: @forbidden.warning, status: "User currently has access" }
           else
             format.html { render :new }
             format.json { render json: @forbidden.errors, status: :unprocessable_entity }
           end
         end
+#        @forbidden.destroy
       else
         @forbidden.active = true
         Log.new({user: current_user.user, 
@@ -101,14 +102,21 @@ class ForbiddensController < ApplicationController
   # DELETE /forbiddens/1
   # DELETE /forbiddens/1.json
   def destroy
-    Log.new({user: current_user.user, 
-             subject: "user:"+@forbidden.user,
-             operation: "deleted forbidden",
-             object:    "table:"+@forbidden.relation
-            }).save
+    if @forbidden.active
+      Log.new({user: current_user.user, 
+               subject: "user:"+@forbidden.user,
+               operation: "deleted forbidden",
+               object:    "table:"+@forbidden.relation,
+               parameters: "forbidden.active:"+@forbidden.active.to_s
+              }).save
+    end
     @forbidden.destroy
     respond_to do |format|
-      format.html { redirect_to forbiddens_url, notice: 'Forbidden was successfully destroyed.' }
+      if @forbidden.active
+        format.html { redirect_to forbiddens_url, notice: 'Forbidden was successfully destroyed.' }
+      else
+        format.html { redirect_to forbiddens_url }
+      end
       format.json { head :no_content }
     end
   end

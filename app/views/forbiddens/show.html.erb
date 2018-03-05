@@ -6,6 +6,10 @@
   <strong>Table:</strong>
   <%= @forbidden.relation %>
 </p>
+<p>
+  <strong>Active:</strong>
+  <%= @forbidden.active %>
+</p>
 
 <%= link_to 'Edit', edit_forbidden_path(@forbidden) %> |
 <%= link_to 'Back', forbiddens_path %>
